@@ -269,6 +269,7 @@ public class MarioGame{
               }
 	    }
 	}
+	EventLogger.bulkWrite(gameEvents);
 	return new MarioResult(this.world, gameEvents, agentEvents);
     }
 }
