@@ -95,11 +95,24 @@ public class EventLogger {
 				ArrayList<String> to_log = actionToAdd("Block Breaking",  e.getMarioState(), e.getMarioX(), e.getMarioY(), e.getTime());
 				actions.add(to_log);
 			}
-			if(e.getEventType() == EventType.JUMP.getValue()) { //take off
-				startX = e.getMarioX();
-				startY = e.getMarioY();
+			if(e.getEventType() == EventType.JUMP.getValue()) {
+				if(e.getEventParam() == 0) { //take off
+					startX = e.getMarioX();
+					startY = e.getMarioY();
+				}
+				if(e.getEventParam() == -1) { //start falling, do math and record for the y
+					if(Math.abs(e.getMarioY() - startY) >= 60) {
+						ArrayList<String> to_log = actionToAdd("High Jump",  e.getMarioState(), e.getMarioX(), e.getMarioY(), e.getTime());
+						actions.add(to_log);
+					}
+					else {
+						ArrayList<String> to_log = actionToAdd("Low Jump",  e.getMarioState(), e.getMarioX(), e.getMarioY(), e.getTime());
+						actions.add(to_log);
+					}
+					startY = -100;
+				}
 			}
-			if(e.getEventType() == EventType.LAND.getValue()) { //landed, do math and record
+			if(e.getEventType() == EventType.LAND.getValue()) { //landed, do math and record for the x
 				if(Math.abs(e.getMarioX() - startX) > 80.0) {
 					ArrayList<String> to_log = actionToAdd("Long Jump",  e.getMarioState(), e.getMarioX(), e.getMarioY(), e.getTime());
 					actions.add(to_log);
@@ -108,18 +121,7 @@ public class EventLogger {
 					ArrayList<String> to_log = actionToAdd("Short Jump",  e.getMarioState(), e.getMarioX(), e.getMarioY(), e.getTime());
 					actions.add(to_log);
 				}
-				if(Math.abs(e.getMarioY() - startY) >= 66.0) {
-					ArrayList<String> to_log = actionToAdd("High Jump",  e.getMarioState(), e.getMarioX(), e.getMarioY(), e.getTime());
-					actions.add(to_log);
-				}
-				else {
-					ArrayList<String> to_log = actionToAdd("Low Jump",  e.getMarioState(), e.getMarioX(), e.getMarioY(), e.getTime());
-					actions.add(to_log);
-				}
-				System.out.println("X: " + Math.abs(e.getMarioX() - startX));
-				System.out.println("Y: " + Math.abs(e.getMarioY() - startY));
 				startX = -100;
-				startY = -100;
 			}
 		}
 

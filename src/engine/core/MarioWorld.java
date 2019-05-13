@@ -470,6 +470,7 @@ public class MarioWorld {
 	    } else if(features.contains(TileFeature.LIFE)){
 		addSprite(new LifeMushroom(this.visuals, xTile * 16 + 9, yTile * 16 + 8));
 	    } else {
+	    	this.addEvent(EventType.COLLECT, block);
 		mario.collectCoin();
 		if(this.visuals) {
 		    this.addEffect(new CoinEffect(xTile * 16 + 8, (yTile)*16));
