@@ -127,10 +127,10 @@ public class EventLogger {
 	public static void bulkWrite(ArrayList<MarioEvent> gameEvents) {
 		//variables 
 		JSONObject obj = addEventsToJSONObj(gameEvents);
-		if(obj.size() == 0) {
-			System.out.println("Nothing to record, returning");
-			return;
-		}
+//		if(obj.size() == 0) {
+//			System.out.println("Nothing to record, returning");
+//			return;
+//		}
 		String fn = "logs/event_log_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
 		
 		String filename = fn + "_" + world_num + ".json";
