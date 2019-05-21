@@ -7,6 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -28,19 +31,14 @@ public class EventLogger {
 		return to_log;
 	}
 
-	public static void bulkWrite(ArrayList<MarioEvent> gameEvents) {
+	public static JSONObject addEventsToJSONObj(ArrayList<MarioEvent> gameEvents) {
 		// variables
 		JSONObject obj = new JSONObject();
 		JSONArray actions = new JSONArray();
-
 		int currTimeStamp = 0;
 
-		String fn = "event_log_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-
-		String world_num = EventLogger.levelName;
-
-		String filename = fn + "_" + world_num + ".json";
 		// loop through all game events
+
 		float startX = -100;
 		float startY = -100;
 		for (MarioEvent e : gameEvents) {
@@ -139,26 +137,56 @@ public class EventLogger {
 				startX = -100;
 			}
 		}
+		
+		return obj;
 
+	}
+
+	public static void bulkWrite(ArrayList<MarioEvent> gameEvents) {
+		//variables 
+		JSONObject obj = addEventsToJSONObj(gameEvents);
+//		if(obj.size() == 0) {
+//			System.out.println("Nothing to record, returning");
+//			return;
+//		}
+		
+		String fn = "logs/event_log_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+		String world_num = EventLogger.levelName;
+
+		String filename = fn + "_" + world_num + ".json";
 		// make a new file
 		File logDir = new File("logs");
 		if(!logDir.exists()) {
 			logDir.mkdir();
 		}
-		File file = new File("logs/" + filename);
+		File file = new File(fn);
+		
 		try {
 			file.createNewFile();
 		} catch (IOException e1) {
 			System.out.println("Could not make a new file.");
 			e1.printStackTrace();
 		}
-		try (FileWriter fileW = new FileWriter("logs/" + filename, false)) {
+		try (FileWriter fileW = new FileWriter(filename, false)) {
 			fileW.write(obj.toJSONString());
-			System.out.println("Successfully Copied JSON Object to File " + "logs/" + filename);
+			System.out.println("Successfully Copied JSON Object to File " + filename);
 			System.out.println("JSON Object: " + obj);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
+	
+	public static String[] getPlayedMechanics(ArrayList<MarioEvent> gameEvents) {
+		JSONObject obj = addEventsToJSONObj(gameEvents);
+		SortedSet<Integer> keys = new TreeSet<>(obj.keySet());
+		ArrayList<String> to_return = new ArrayList <String>();
+		for (Integer key : keys) { 
+			String value = obj.get(key).toString();
+			to_return.add(value);			
+		}
+
+		return to_return.toArray(new String[0]);
+	}
+
 }
