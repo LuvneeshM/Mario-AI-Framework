@@ -160,7 +160,7 @@ public class EventLogger {
 		//variables 
 		JSONObject obj = addEventsToJSONObj(gameEvents);
 		if(obj.size() == 0) {
-			System.out.println("\tNothing to record, returning");
+//			System.out.println("\tNothing to record, returning");
 			return;
 		}
 		
@@ -183,7 +183,7 @@ public class EventLogger {
 //		}
 		try (FileWriter fileW = new FileWriter(filename, false)) {
 			fileW.write(obj.toJSONString());
-			System.out.println("\tSuccessfully Copied JSON Object to File " + filename);
+//			System.out.println("\tSuccessfully Copied JSON Object to File " + filename);
 //			System.out.println("JSON Object: " + obj);
 		} catch (Exception e) {
 			e.printStackTrace();
