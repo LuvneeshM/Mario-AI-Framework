@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<data>
+    <one>The player can't move through walls, Press "Space" to swing the sword, Monsters can't move through walls, If the player collides with the key - they pick up the key, If a monster gets hit by the sword - it dies, If the player has the key and collides with the door - you win, Monsters can't move through monsters, If the player collides with a monster - you lose, The player can't go through the door without the key</one>
+</data>
