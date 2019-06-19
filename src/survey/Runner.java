@@ -38,14 +38,14 @@ public class Runner {
 	public static int totalPlayed;
 
 	public static void main(String[] args) {
-		numLevels = 5;
+		numLevels = 4;
 		playLevels = 1;
 		chosenGame = -1;
 
 		// make ID
 		id = UUID.randomUUID().toString().replace("-", "");
 
-		File[] files = new File("examples/games/").listFiles();
+		File[] files = new File("levels/mechanic-experiments/").listFiles();
 		games = new ArrayList<String>();
 		for (File f : files) {
 			String temp = f.getName().substring(0, f.getName().lastIndexOf('.'));
@@ -66,7 +66,7 @@ public class Runner {
 		}
 		mouseClick = RunnerEnum.NONE;
 		reasonFrame.setVisible(false);
-
+		runnerFrame.setVisible(true);
 		submissionDone = true;
 		while (true) {
 			while (!submissionDone) {
@@ -83,30 +83,8 @@ public class Runner {
 				totalPlayed = 0;
 
 				do {
-					chosenLevel = (totalPlayed) % 5;
-					levels.add(chosenLevel);
-					frames.get(games.get(chosenGame)).setSubmitEnable(totalPlayed > 2);
-					// frames.get(games.get(chosenGame)).setPlayEnable(totalPlayed <= 2);
-					mouseClick = RunnerEnum.NONE;
-					frames.get(games.get(chosenGame)).setVisible(true);
-					frames.get(games.get(chosenGame)).setFocusable(true);
-					while (mouseClick == RunnerEnum.NONE) {
-						System.out.print("");
-					}
-					switch (mouseClick) {
-					case TUTORIAL:
-						for (String g : games) {
-							frames.get(g).setVisible(false);
-						}
-						playGoodDesignGame();
-						playedFirst = true;
-						playedSecond = true;
-						playedThird = true;
-						totalPlayed++;
-						break;
-					default:
-						break;
-					}
+					
+
 				} while (mouseClick != RunnerEnum.SUBMIT);
 
 				// // we just clicked submit, so set all radio buttons to the chosen game's
@@ -140,17 +118,7 @@ public class Runner {
 		String resultsFile = games.get(Runner.chosenGame) + "/human/" + chosenLevel + "/0" + "/result/result.json";
 		double[] result;
 		try {
-			VisualDemonstrationInterfacer vdi = new VisualDemonstrationInterfacer(games.get(Runner.chosenGame), false);
-			ArrayList<BunchOfGames> bogs = new ArrayList<>();
-			BunchOfGames game = new BunchOfGames(gameFile, levelFile, "human", "" + chosenLevel, "0");
-			bogs.add(game);
-			String[] human = { "human" };
-			vdi.runBunchOfGames(bogs, human, chosenLevel, 0);
-			// result = ArcadeMachine.playOneGame(gameFile, levelFile, actionFile,
-			// Runner.random.nextInt(Integer.MAX_VALUE));
-			// Runner.win = result[0];
-			// Runner.score = result[1];
-			// Runner.time = result[2];
+			// play a level
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
