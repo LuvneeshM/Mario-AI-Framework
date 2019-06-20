@@ -2,18 +2,24 @@ package survey;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.UUID;
 
+import engine.core.EventLogger;
+import engine.core.MarioGame;
+
 public class Runner {
 	public static int numLevels;
 	public static int playLevels;
 
 	public static Random random;
-	public static int chosenGame;
+	public static String chosenGame;
 	public static int chosenLevel;
 	public static double win;
 	public static double score;
@@ -40,7 +46,7 @@ public class Runner {
 	public static void main(String[] args) {
 		numLevels = 4;
 		playLevels = 1;
-		chosenGame = -1;
+		chosenGame = "";
 
 		// make ID
 		id = UUID.randomUUID().toString().replace("-", "");
@@ -73,8 +79,8 @@ public class Runner {
 			while (!submissionDone) {
 				System.out.print("");
 			}
-
-			chosenGame = (chosenGame + 1) % games.size();
+			int selected = random.nextInt(games.size());
+			chosenGame = games.remove(selected);
 
 			ArrayList<Integer> levels = new ArrayList<Integer>();
 
@@ -126,18 +132,30 @@ public class Runner {
 	}
 
 	public static void playGoodDesignGame() {
-		String gameFile = "examples/games/" + games.get(Runner.chosenGame) + ".txt";
-		String levelFile = "examples/levels/" + games.get(Runner.chosenGame) + "_lvl" + chosenLevel + ".txt";
-		String mechanicsFile = games.get(Runner.chosenGame) + "/human/" + chosenLevel + "/0"
-				+ "/interactions/interaction.json";
-		String resultsFile = games.get(Runner.chosenGame) + "/human/" + chosenLevel + "/0" + "/result/result.json";
 		double[] result;
 		try {
 			// play a level
+			MarioGame game = new MarioGame();
+			String level = "./levels/mechanic-experiments/" + Runner.chosenGame + ".txt";
+		    EventLogger.levelName = Runner.chosenGame;
+
+		    game.runGame(new agents.robinBaumgarten.Agent(), getLevel(level), 999, 0, true);
+		    	
+			String name = Runner.chosenGame;
+			System.out.println(name);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
+	}
+	
+	public static String getLevel(String filepath) {
+		String content = "";
+		try {
+			content = new String(Files.readAllBytes(Paths.get(filepath)));
+		} catch (IOException e) {
+		}
+		return content;
 	}
 }

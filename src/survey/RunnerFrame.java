@@ -317,11 +317,11 @@ public class RunnerFrame extends JFrame implements KeyListener {
 			PrintWriter dos = new PrintWriter(fos);
 			dos.print("blank\t");
 			dos.print(Runner.id + "\t");
-			dos.print(Runner.games.get(Runner.chosenGame) + "\t");
-			dos.print(getMechs(0) + "\t" + getMechs(1) + "\t" + getMechs(2) + "\t");
+			dos.print(Runner.chosenGame + "\t");
+//			dos.print(getMechs(0) + "\t" + getMechs(1) + "\t" + getMechs(2) + "\t");
 			dos.print(getChoices() + "\t");
-			dos.print(getResults(0) + "\t" + getResults(1) + "\t" + getResults(2) + "\t");
-			dos.print(getActions(0) + "\t" + getActions(1) + "\t" + getActions(2) + "\t");
+//			dos.print(getResults(0) + "\t" + getResults(1) + "\t" + getResults(2) + "\t");
+//			dos.print(getActions(0) + "\t" + getActions(1) + "\t" + getActions(2) + "\t");
 			dos.print(gender.getSelection().getActionCommand() + "\t");
 			dos.print(age.getSelection().getActionCommand() + "\t");
 			dos.print(gamer.getSelection().getActionCommand() + "\n");
@@ -335,38 +335,38 @@ public class RunnerFrame extends JFrame implements KeyListener {
 		this.resetCheckBoxes();
 	}
 
-	public String getMechs(int level) {
-		String actionFile = Runner.games.get(Runner.chosenGame) + "/human/" + level + "/0/interactions/interaction.json";
-		String result = "";
-		IO reader = new IO();
-		String[] lines = reader.readFile(actionFile);
-		for (int i = 0; i < lines.length; i++) {
-			result += lines[i] + ",";
-		}
-		return result;
-	}
-
-	public String getActions(int level) {
-		String actionFile = Runner.games.get(Runner.chosenGame) + "/human/" + level + "/0/actions/actions.json";
-		String result = "";
-		IO reader = new IO();
-		String[] lines = reader.readFile(actionFile);
-		for (int i = 0; i < lines.length; i++) {
-			result += lines[i] + ",";
-		}
-		return result;
-	}
-
-	public String getResults(int level) {
-		String actionFile = Runner.games.get(Runner.chosenGame) + "/human/" + level + "/0/result/result.json";
-		String result = "";
-		IO reader = new IO();
-		String[] lines = reader.readFile(actionFile);
-		for (int i = 0; i < lines.length; i++) {
-			result += lines[i] + ",";
-		}
-		return result;
-	}
+//	public String getMechs(int level) {
+//		String actionFile = Runner.games.get(Runner.chosenGame) + "/human/" + level + "/0/interactions/interaction.json";
+//		String result = "";
+//		IO reader = new IO();
+//		String[] lines = reader.readFile(actionFile);
+//		for (int i = 0; i < lines.length; i++) {
+//			result += lines[i] + ",";
+//		}
+//		return result;
+//	}
+//
+//	public String getActions(int level) {
+//		String actionFile = Runner.games.get(Runner.chosenGame) + "/human/" + level + "/0/actions/actions.json";
+//		String result = "";
+//		IO reader = new IO();
+//		String[] lines = reader.readFile(actionFile);
+//		for (int i = 0; i < lines.length; i++) {
+//			result += lines[i] + ",";
+//		}
+//		return result;
+//	}
+//
+//	public String getResults(int level) {
+//		String actionFile = Runner.games.get(Runner.chosenGame) + "/human/" + level + "/0/result/result.json";
+//		String result = "";
+//		IO reader = new IO();
+//		String[] lines = reader.readFile(actionFile);
+//		for (int i = 0; i < lines.length; i++) {
+//			result += lines[i] + ",";
+//		}
+//		return result;
+//	}
 
 	public String getChoices() {
 		String result = "";
