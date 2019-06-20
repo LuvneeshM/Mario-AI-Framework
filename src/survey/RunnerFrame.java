@@ -135,7 +135,7 @@ public class RunnerFrame extends JFrame implements KeyListener {
 		radioButtons.add(female);
 		radioButtons.add(male);
 		radioButtons.add(other);
-
+		radioButtons.add(nonbi);
 		question2 = new JLabel("Which age group do you fit within?");
 		JRadioButton firstGroup = new JRadioButton("<25");
 		JRadioButton secondGroup = new JRadioButton("25-34");

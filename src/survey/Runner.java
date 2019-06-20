@@ -67,6 +67,7 @@ public class Runner {
 		mouseClick = RunnerEnum.NONE;
 		reasonFrame.setVisible(false);
 		runnerFrame.setVisible(true);
+		runnerFrame.setSubmitEnable(false);
 		submissionDone = true;
 		while (true) {
 			while (!submissionDone) {
@@ -84,10 +85,24 @@ public class Runner {
 
 				do {
 					
-
+					while (mouseClick == RunnerEnum.NONE) {
+				    	System.out.print("");
+				    }
+				    switch (mouseClick) {
+					    case TUTORIAL:
+						playGoodDesignGame();
+						playedFirst = true;
+						playedSecond = true;
+						playedThird = true;
+						totalPlayed++;
+						break;
+					    default:
+						break;
+				    }
 				} while (mouseClick != RunnerEnum.SUBMIT);
 
-				// // we just clicked submit, so set all radio buttons to the chosen game's
+				// // we just clicked submit, so set all radio buttons to the
+				// chosen game's
 				// buttons
 				// frames.get(games.get(chosenGame)).age.getSelection()
 
