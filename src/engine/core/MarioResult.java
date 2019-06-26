@@ -2,6 +2,8 @@ package engine.core;
 
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
+
 import engine.helper.EventType;
 import engine.helper.GameStatus;
 import engine.helper.SpriteType;
@@ -21,6 +23,7 @@ public class MarioResult {
 	this.gameEvents = gameEvents;
 	this.agentEvents = agentEvents;
     }
+    
     
     /**
      * Get the current state of the running game

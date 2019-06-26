@@ -13,6 +13,7 @@ import java.util.UUID;
 
 import engine.core.EventLogger;
 import engine.core.MarioGame;
+import engine.core.MarioResult;
 
 public class Runner {
 	public static int numLevels;
@@ -30,20 +31,13 @@ public class Runner {
 
 	public static RunnerEnum mouseClick;
 
-	public static String firstGenerator;
-	public static String secondGenerator;
-	public static String firstLevelNumber;
-	public static String secondLevelNumber;
-	public static String tutorialLevelNumber;
-	public static boolean playedFirst;
-	public static boolean playedSecond;
-	public static boolean playedThird;
-
 	public static String id;
 
 	public static int totalPlayed;
+	public static int level;
 
 	public static void main(String[] args) {
+		level = 0;
 		numLevels = 4;
 		playLevels = 1;
 		chosenGame = "";
@@ -64,7 +58,7 @@ public class Runner {
 
 		ReasonFrame reasonFrame = new ReasonFrame();
 		RunnerFrame runnerFrame = new RunnerFrame(SurveyText.getSurveyText());
-
+		NextGameFrame nextGameFrame = new NextGameFrame();
 		reasonFrame.setVisible(true);
 		reasonFrame.setFocusable(true);
 		while (mouseClick == RunnerEnum.NONE) {
@@ -72,48 +66,54 @@ public class Runner {
 		}
 		mouseClick = RunnerEnum.NONE;
 		reasonFrame.setVisible(false);
-		runnerFrame.setVisible(true);
+		runnerFrame.setVisible(false);
 		runnerFrame.setSubmitEnable(false);
 		submissionDone = true;
+		boolean done = false;
 		while (true) {
+			System.out.println("boop");
 			while (!submissionDone) {
 				System.out.print("");
 			}
 			int selected = random.nextInt(games.size());
 			chosenGame = games.remove(selected);
-
 			ArrayList<Integer> levels = new ArrayList<Integer>();
-
-			for (int i = 0; i < playLevels; i++) {
-
-				submissionDone = false;
-				totalPlayed = 0;
-
-				do {
-					
-					while (mouseClick == RunnerEnum.NONE) {
-				    	System.out.print("");
-				    }
-				    switch (mouseClick) {
-					    case TUTORIAL:
+			do {
+				playGoodDesignGame();
+				totalPlayed++;
+				nextGameFrame.setVisible(true);
+				while (mouseClick == RunnerEnum.NONE) {
+			    	System.out.print("");
+			    }
+			    switch (mouseClick) {
+				    case TUTORIAL:
 						playGoodDesignGame();
-						playedFirst = true;
-						playedSecond = true;
-						playedThird = true;
 						totalPlayed++;
 						break;
-					    default:
+				    case SAME:
+				    	playGoodDesignGame();
+						totalPlayed++;
 						break;
-				    }
-				} while (mouseClick != RunnerEnum.SUBMIT);
-
-				// // we just clicked submit, so set all radio buttons to the
-				// chosen game's
-				// buttons
-				// frames.get(games.get(chosenGame)).age.getSelection()
-
+				    case NEXT:
+				    	selected = random.nextInt(games.size());
+				    	if (games.size() > 0) {
+				    		chosenGame = games.remove(selected);
+				    	} else {
+				    		done = true;
+				    	}
+						break;
+				    default:
+						break;
+			    }
+			} while (done != true);
+			runnerFrame.setVisible(true);
+			runnerFrame.setFocusable(true);
+			runnerFrame.setSubmitEnable(true);
+			while(mouseClick != RunnerEnum.DONE) {
+				
 			}
 		}
+
 	}
 
 	public static int getNumberOfFiles(String filePath, String fileName) {
@@ -139,10 +139,11 @@ public class Runner {
 			String level = "./levels/mechanic-experiments/" + Runner.chosenGame + ".txt";
 		    EventLogger.levelName = Runner.chosenGame;
 
-		    game.runGame(new agents.robinBaumgarten.Agent(), getLevel(level), 999, 0, true);
-		    	
+		    MarioResult results = game.runGame(new agents.robinBaumgarten.Agent(), getLevel(level), 999, 0, true);
+
 			String name = Runner.chosenGame;
 			System.out.println(name);
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
