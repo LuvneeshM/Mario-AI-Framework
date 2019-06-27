@@ -53,6 +53,8 @@ public class RunnerFrame extends JFrame implements KeyListener {
 	public ButtonGroup age;
 	public ButtonGroup gamer;
 	public ButtonGroup game;
+	public ButtonGroup levels;
+	
 	private JLabel question1;
 	private JLabel question2;
 	private JLabel question3;
@@ -62,9 +64,13 @@ public class RunnerFrame extends JFrame implements KeyListener {
 	public JPanel gamerPanel;
 	public JPanel gamePanel;
 	private JCheckBox[] checkboxes;
+	
+	
 
 	private JButton submitButton;
-
+	private JButton level1;
+	private JButton level2;
+	private JButton level3;
 
 	private ArrayList<JRadioButton> radioButtons;
 
@@ -76,21 +82,23 @@ public class RunnerFrame extends JFrame implements KeyListener {
 		for (int i = 0; i < mechanics.length; i++) {
 			this.checkboxes[i] = new JCheckBox(mechanics[i]);
 		}
+		setUpLevelButtons();
 
 		radioButtons = new ArrayList<JRadioButton>();
 
-		startButton = new JButton("Play Level");
-		startButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Runner.mouseClick = RunnerEnum.TUTORIAL;
-			}
-		});
-		startButton.setFocusable(false);
+//		startButton = new JButton("Play Level");
+//		startButton.addActionListener(new ActionListener() {
+//
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				Runner.mouseClick = RunnerEnum.TUTORIAL;
+//			}
+//		});
+		
+//		startButton.setFocusable(false);
 
 		optionalLabel = new JLabel(
-				"<html><div align=\"center\">(Mandatory) Play to understand the game.<br/>Use the only the ARROW KEYS and SPACE BAR as controls</div></html>");
+				"<html><div align=\"center\">(Mandatory) Play each level at least once.<br/>Use the only the ARROW KEYS to move, S to run, and A to jump!</div></html>");
 		optionalLabel.setHorizontalAlignment(JLabel.CENTER);
 
 		tutorialLabel = new JLabel();
@@ -224,8 +232,11 @@ public class RunnerFrame extends JFrame implements KeyListener {
 		gl.setAutoCreateContainerGaps(true);
 		gl.setAutoCreateGaps(true);
 
-		ParallelGroup horizontalGroup = gl.createParallelGroup(Alignment.CENTER).addComponent(tutorialLabel)
-				.addComponent(optionalLabel).addComponent(startButton).addComponent(submissionSep).addComponent(question1);
+		ParallelGroup horizontalGroup = gl.createParallelGroup(Alignment.CENTER)
+				.addComponent(tutorialLabel)
+				.addComponent(optionalLabel)
+				.addComponent(level1).addComponent(level2).addComponent(level3)
+				.addComponent(submissionSep).addComponent(question1);
 
 		horizontalGroup.addComponent(genderPanel).addComponent(question2);
 		horizontalGroup.addComponent(agePanel).addComponent(question3);
@@ -236,7 +247,8 @@ public class RunnerFrame extends JFrame implements KeyListener {
 		horizontalGroup = horizontalGroup.addComponent(submitButton);
 
 		SequentialGroup verticalGroup = gl.createSequentialGroup().addComponent(tutorialLabel).addComponent(optionalLabel)
-				.addComponent(startButton).addComponent(submissionSep).addComponent(question1).addComponent(genderPanel)
+				.addComponent(level1).addComponent(level2).addComponent(level3)
+				.addComponent(submissionSep).addComponent(question1).addComponent(genderPanel)
 				.addComponent(question2).addComponent(agePanel).addComponent(question3).addComponent(gamerPanel)
 				.addComponent(submissionSep).addComponent(question4).addComponent(gamePanel);
 
@@ -251,6 +263,35 @@ public class RunnerFrame extends JFrame implements KeyListener {
 		pack();
 	}
 
+	public void setUpLevelButtons() {
+		levels = new ButtonGroup();
+		levels.add(level1);
+		levels.add(level2);
+		levels.add(level3);
+		level1 = new JButton("Level 1");
+		level1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Runner.mouseClick = RunnerEnum.LEVEL_1;
+			}
+		});
+		
+		level2 = new JButton("Level 2");
+		level2.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Runner.mouseClick = RunnerEnum.LEVEL_2;
+			}
+		});
+		
+		level3 = new JButton("Level 3");
+		level3.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Runner.mouseClick = RunnerEnum.LEVEL_3;
+			}
+		});
+	}
 	public void setSubmitEnable(boolean enable) {
 		submitButton.setEnabled(enable);
 		agePanel.setEnabled(enable);
@@ -272,7 +313,7 @@ public class RunnerFrame extends JFrame implements KeyListener {
 
 	public void setPlayEnable(boolean enable) {
 		optionalLabel.setEnabled(enable);
-		startButton.setEnabled(enable);
+//		startButton.setEnabled(enable);
 	}
 
 	public void resetCheckBoxes() {

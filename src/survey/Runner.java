@@ -16,7 +16,6 @@ import engine.core.MarioGame;
 import engine.core.MarioResult;
 
 public class Runner {
-	public static int numLevels;
 	public static int playLevels;
 
 	public static Random random;
@@ -26,22 +25,18 @@ public class Runner {
 	public static double score;
 	public static double time;
 	public static boolean submissionDone;
-
 	public static ArrayList<String> games;
-
 	public static RunnerEnum mouseClick;
-
 	public static String id;
-
 	public static int totalPlayed;
-	public static int level;
+	public static boolean one, two, three;
 
 	public static void main(String[] args) {
-		level = 0;
-		numLevels = 4;
 		playLevels = 1;
 		chosenGame = "";
-
+		one = false;
+		two = false;
+		three = false;
 		// make ID
 		id = UUID.randomUUID().toString().replace("-", "");
 
@@ -58,7 +53,6 @@ public class Runner {
 
 		ReasonFrame reasonFrame = new ReasonFrame();
 		RunnerFrame runnerFrame = new RunnerFrame(SurveyText.getSurveyText());
-		NextGameFrame nextGameFrame = new NextGameFrame();
 		reasonFrame.setVisible(true);
 		reasonFrame.setFocusable(true);
 		while (mouseClick == RunnerEnum.NONE) {
@@ -71,47 +65,55 @@ public class Runner {
 		submissionDone = true;
 		boolean done = false;
 		while (true) {
-			System.out.println("boop");
-			while (!submissionDone) {
-				System.out.print("");
-			}
-			int selected = random.nextInt(games.size());
-			chosenGame = games.remove(selected);
-			ArrayList<Integer> levels = new ArrayList<Integer>();
 			do {
-				playGoodDesignGame();
-				totalPlayed++;
-				nextGameFrame.setVisible(true);
+				runnerFrame.setVisible(true);
+				runnerFrame.setFocusable(true);
+			    if (one && two && three) {
+			    	runnerFrame.setSubmitEnable(true);
+			    }
 				while (mouseClick == RunnerEnum.NONE) {
 			    	System.out.print("");
 			    }
+				
 			    switch (mouseClick) {
 				    case TUTORIAL:
+				    	mouseClick = RunnerEnum.NONE;
 						playGoodDesignGame();
 						totalPlayed++;
+						runnerFrame.setVisible(true);
+						runnerFrame.setFocusable(true);
 						break;
-				    case SAME:
+				    case LEVEL_1:
+				    	mouseClick = RunnerEnum.NONE;
+						runnerFrame.setVisible(false);
+						runnerFrame.setFocusable(false);
+				    	chosenGame = games.get(0);
 				    	playGoodDesignGame();
+						one = true;
 						totalPlayed++;
 						break;
-				    case NEXT:
-				    	selected = random.nextInt(games.size());
-				    	if (games.size() > 0) {
-				    		chosenGame = games.remove(selected);
-				    	} else {
-				    		done = true;
-				    	}
+				    case LEVEL_2:
+				    	mouseClick = RunnerEnum.NONE;
+						runnerFrame.setVisible(false);
+						runnerFrame.setFocusable(false);
+				    	chosenGame = games.get(1);
+				    	playGoodDesignGame();
+				    	two = true;
+						totalPlayed++;
 						break;
+				    case LEVEL_3:
+				    	mouseClick = RunnerEnum.NONE;
+						runnerFrame.setVisible(false);
+						runnerFrame.setFocusable(false);
+				    	chosenGame = games.get(2);
+				    	playGoodDesignGame();
+				    	three = true;
+						totalPlayed++;
+						break;	
 				    default:
 						break;
 			    }
 			} while (done != true);
-			runnerFrame.setVisible(true);
-			runnerFrame.setFocusable(true);
-			runnerFrame.setSubmitEnable(true);
-			while(mouseClick != RunnerEnum.DONE) {
-				
-			}
 		}
 
 	}
@@ -132,7 +134,6 @@ public class Runner {
 	}
 
 	public static void playGoodDesignGame() {
-		double[] result;
 		try {
 			// play a level
 			MarioGame game = new MarioGame();
