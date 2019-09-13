@@ -6,8 +6,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -20,6 +22,7 @@ public class Runner {
 
 	public static Random random;
 	public static String chosenGame;
+	public static int experimentID;
 	public static int chosenLevel;
 	public static double win;
 	public static double score;
@@ -39,15 +42,22 @@ public class Runner {
 		three = false;
 		// make ID
 		id = UUID.randomUUID().toString().replace("-", "");
-
-		File[] files = new File("levels/mechanic-experiments/").listFiles();
-		games = new ArrayList<String>();
-		for (File f : files) {
-			String temp = f.getName().substring(0, f.getName().lastIndexOf('.'));
-			if (temp.trim().length() > 0)
-				games.add(temp);
+		
+		File[] folders = new File("levels/mechanic-experiments/").listFiles();
+		ArrayList<ArrayList<String>> experiments = new ArrayList<ArrayList<String>>();
+		games = new ArrayList<String>();                                                                                                                                                                                                                                                                                                                                                         
+		int count = 0;
+		for (int i = 0; i < folders.length; i++) {
+			File f = folders[i];
+			File[] levels = new File(f.getPath()).listFiles();
+			experiments.add(new ArrayList<String>());
+			for (int j = 0; j < levels.length; j++) {
+				File level = levels[j];
+				experiments.get(i).add(level.getPath());
+			}
+			count++;
 		}
-		Collections.shuffle(games);
+		Collections.shuffle(experiments);
 		random = new Random();
 		mouseClick = RunnerEnum.NONE;
 
@@ -64,7 +74,9 @@ public class Runner {
 		runnerFrame.setSubmitEnable(false);
 		submissionDone = true;
 		boolean done = false;
+		experimentID = 0;
 		while (true) {
+			
 			do {
 				runnerFrame.setVisible(true);
 				runnerFrame.setFocusable(true);
@@ -87,7 +99,7 @@ public class Runner {
 				    	mouseClick = RunnerEnum.NONE;
 						runnerFrame.setVisible(false);
 						runnerFrame.setFocusable(false);
-				    	chosenGame = games.get(0);
+				    	chosenGame = experiments.get(experimentID).get(0);
 				    	playGoodDesignGame();
 						one = true;
 						totalPlayed++;
@@ -96,7 +108,7 @@ public class Runner {
 				    	mouseClick = RunnerEnum.NONE;
 						runnerFrame.setVisible(false);
 						runnerFrame.setFocusable(false);
-				    	chosenGame = games.get(1);
+						chosenGame = experiments.get(experimentID).get(1);
 				    	playGoodDesignGame();
 				    	two = true;
 						totalPlayed++;
@@ -105,7 +117,7 @@ public class Runner {
 				    	mouseClick = RunnerEnum.NONE;
 						runnerFrame.setVisible(false);
 						runnerFrame.setFocusable(false);
-				    	chosenGame = games.get(2);
+						chosenGame = experiments.get(experimentID).get(2);
 				    	playGoodDesignGame();
 				    	three = true;
 						totalPlayed++;
@@ -137,11 +149,10 @@ public class Runner {
 		try {
 			// play a level
 			MarioGame game = new MarioGame();
-			String level = "./levels/mechanic-experiments/" + Runner.chosenGame + ".txt";
+			String level = Runner.chosenGame;
 		    EventLogger.levelName = Runner.chosenGame;
-
+		    System.out.println(level);
 		    MarioResult results = game.runGame(new agents.robinBaumgarten.Agent(), getLevel(level), 999, 0, true);
-
 			String name = Runner.chosenGame;
 			System.out.println(name);
 			
