@@ -200,25 +200,25 @@ public class RunnerFrame extends JFrame implements KeyListener {
 		JRadioButton firstGame = new JRadioButton("1");
 		JRadioButton secondGame = new JRadioButton("2");
 		JRadioButton thirdGame = new JRadioButton("3");
-		JRadioButton fourthGame = new JRadioButton("4");
+//		JRadioButton fourthGame = new JRadioButton("4");
 
 		firstGame.setActionCommand("0");
 		secondGame.setActionCommand("1");
 		thirdGame.setActionCommand("2");
-		fourthGame.setActionCommand("3");
+//		fourthGame.setActionCommand("3");
 		gamePanel = new JPanel((LayoutManager) new FlowLayout(FlowLayout.CENTER));
 		game.add(firstGame);
 		game.add(secondGame);
 		game.add(thirdGame);
-		game.add(fourthGame);
+//		game.add(fourthGame);
 		gamePanel.add(firstGame);
 		gamePanel.add(secondGame);
 		gamePanel.add(thirdGame);
-		gamePanel.add(fourthGame);
+//		gamePanel.add(fourthGame);
 		radioButtons.add(firstGame);
 		radioButtons.add(secondGame);
 		radioButtons.add(thirdGame);
-		radioButtons.add(fourthGame);
+//		radioButtons.add(fourthGame);
 
 		submissionSep = new JSeparator();
 
