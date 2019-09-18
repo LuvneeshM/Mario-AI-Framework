@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -75,6 +76,14 @@ public class Runner {
 		submissionDone = true;
 		boolean done = false;
 		experimentID = 0;
+		
+		// Clear old log directory
+		try {
+			Runner.deleteDirectoryStream(Paths.get("logs"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		while (true) {
 			
 			do {
@@ -150,7 +159,8 @@ public class Runner {
 			// play a level
 			MarioGame game = new MarioGame();
 			String level = Runner.chosenGame;
-		    EventLogger.levelName = Runner.chosenGame;
+			File levelPath = new File(level);
+		    EventLogger.levelName = levelPath.getName().substring(0, levelPath.getName().length() - 4);
 		    System.out.println(level);
 		    MarioResult results = game.runGame(new agents.robinBaumgarten.Agent(), getLevel(level), 999, 0, true);
 			String name = Runner.chosenGame;
@@ -171,4 +181,11 @@ public class Runner {
 		}
 		return content;
 	}
+	
+	static void deleteDirectoryStream(Path path) throws IOException {
+		  Files.walk(path)
+		    .sorted(Comparator.reverseOrder())
+		    .map(Path::toFile)
+		    .forEach(File::delete);
+		}
 }

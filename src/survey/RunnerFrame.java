@@ -38,6 +38,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
 
+import engine.core.EventLogger;
+
 public class RunnerFrame extends JFrame implements KeyListener {
 	private static final long serialVersionUID = 1L;
 
@@ -358,14 +360,15 @@ public class RunnerFrame extends JFrame implements KeyListener {
 			PrintWriter dos = new PrintWriter(fos);
 			dos.print("blank\t");
 			dos.print(Runner.id + "\t");
-			dos.print(Runner.chosenGame + "\t");
-//			dos.print(getMechs(0) + "\t" + getMechs(1) + "\t" + getMechs(2) + "\t");
+			dos.print(EventLogger.levelName + "\t");
+			dos.print(getMechs() + "\t");
 			dos.print(getChoices() + "\t");
 //			dos.print(getResults(0) + "\t" + getResults(1) + "\t" + getResults(2) + "\t");
 //			dos.print(getActions(0) + "\t" + getActions(1) + "\t" + getActions(2) + "\t");
 			dos.print(gender.getSelection().getActionCommand() + "\t");
 			dos.print(age.getSelection().getActionCommand() + "\t");
 			dos.print(gamer.getSelection().getActionCommand() + "\n");
+			dos.print(game.getSelection().getActionCommand() + "\n");
 			dos.close();
 			fos.close();
 		} catch (IOException e) {
@@ -376,16 +379,39 @@ public class RunnerFrame extends JFrame implements KeyListener {
 		this.resetCheckBoxes();
 	}
 
-//	public String getMechs(int level) {
-//		String actionFile = Runner.games.get(Runner.chosenGame) + "/human/" + level + "/0/interactions/interaction.json";
-//		String result = "";
-//		IO reader = new IO();
-//		String[] lines = reader.readFile(actionFile);
-//		for (int i = 0; i < lines.length; i++) {
-//			result += lines[i] + ",";
-//		}
-//		return result;
-//	}
+	public String getMechs() {
+		String result = "";
+
+		// get every folder in logs
+		File[] folders = new File("logs").listFiles();
+		for(int i = 0; i < folders.length; i++) {
+			File[] eventFiles = folders[i].listFiles();
+			for(int j = 0; j < eventFiles.length; j++) {
+				String eventsFile = eventFiles[j].getPath();
+				IO reader = new IO();
+				String[] lines = reader.readFile(eventsFile);
+				for (int k = 0; k < lines.length; k++) {
+					int startingPoint = 0;
+					String newLines = "";
+					if(lines[k].length() > 75) {
+						while(startingPoint < lines[k].length()) {
+							String newLine = "";
+							if(startingPoint + 75 < lines[k].length()) 
+								newLine = lines[k].substring(startingPoint, startingPoint + 75);
+							
+							else 
+								newLine = lines[k].substring(startingPoint);
+							startingPoint+= 75;
+							result += newLine + "\n";
+						}
+					} else {
+						result += lines[k] + ",";
+					}
+				}
+			}
+		}
+		return result;
+	}
 //
 //	public String getActions(int level) {
 //		String actionFile = Runner.games.get(Runner.chosenGame) + "/human/" + level + "/0/actions/actions.json";

@@ -373,7 +373,7 @@ public class MarioGame {
 				}
 			}
 		}
-		EventLogger.bulkWrite(gameEvents);
+		EventLogger.bulkWrite(gameEvents, true);
 		if(visual) 
 			this.window.dispose();
 		return new MarioResult(this.world, gameEvents, agentEvents);
