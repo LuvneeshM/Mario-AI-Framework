@@ -47,6 +47,7 @@ public class RunnerFrame extends JFrame implements KeyListener {
 	public static String genderValue = "unknown";
 	public static String gamerValue = "-1";
 
+	private final String TOKEN = "<%^%>";
 	public JSeparator submissionSep;
 	public JLabel optionalLabel;
 	public JLabel tutorialLabel;
@@ -342,12 +343,12 @@ public class RunnerFrame extends JFrame implements KeyListener {
 		String[] data = linkReader.readFile("submissionLinks.txt");
 		try {
 			String response = 
-			    "entry." + data[1] + "=" + EventLogger.levelName
-			    + ",&entry." + data[2] + "=" + gender.getSelection().getActionCommand()
-			    + ",&entry." + data[3] + "=" + age.getSelection().getActionCommand()
-			    + ",&entry." + data[4] + "=" + gamer.getSelection().getActionCommand() 
-			    + ",&entry." + data[5] + "=" + game.getSelection().getActionCommand()
-			    + ",&entry." + data[6] + "=" + getMechs();
+			    "entry." + data[1] + "=" + EventLogger.levelName.substring(0, EventLogger.levelName.indexOf('-',4))
+			    + "&entry." + data[2] + "=" + gender.getSelection().getActionCommand()
+			    + "&entry." + data[3] + "=" + age.getSelection().getActionCommand()
+			    + "&entry." + data[4] + "=" + gamer.getSelection().getActionCommand() 
+			    + "&entry." + data[5] + "=" + game.getSelection().getActionCommand()
+			    + "&entry." + data[6] + "=" + getMechs();
 		
 			    System.out.println(response);
 			    URL url = new URL(data[0]);
@@ -428,6 +429,7 @@ public class RunnerFrame extends JFrame implements KeyListener {
 					} else {
 						result += lines[k] + ",";
 					}
+					result += TOKEN;
 				}
 			}
 		}
