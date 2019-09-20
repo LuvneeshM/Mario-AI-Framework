@@ -112,7 +112,7 @@ public class RunnerFrame extends JFrame implements KeyListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Runner.mouseClick = RunnerEnum.SUBMIT;
-				// replyToGoogleForm();
+				 replyToGoogleForm();
 				saveToTSV();
 			}
 		});
@@ -341,7 +341,31 @@ public class RunnerFrame extends JFrame implements KeyListener {
 		IO linkReader = new IO();
 		String[] data = linkReader.readFile("submissionLinks.txt");
 		try {
-			
+			String response = 
+			    "entry." + data[1] + "=" + EventLogger.levelName
+			    + ",&entry." + data[2] + "=" + gender.getSelection().getActionCommand()
+			    + ",&entry." + data[3] + "=" + age.getSelection().getActionCommand()
+			    + ",&entry." + data[4] + "=" + gamer.getSelection().getActionCommand() 
+			    + ",&entry." + data[5] + "=" + game.getSelection().getActionCommand()
+			    + ",&entry." + data[6] + "=" + getMechs();
+		
+			    System.out.println(response);
+			    URL url = new URL(data[0]);
+			    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			    connection.setDoOutput(true);
+			    connection.setDoInput(true);
+			    connection.setRequestMethod("POST");
+			    connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+			    DataOutputStream dataStream = new DataOutputStream(connection.getOutputStream());
+			    dataStream.writeBytes(response);
+			    dataStream.flush();
+			    dataStream.close();
+		
+			    InputStream dataInput = connection.getInputStream();
+			    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(dataInput));
+		
+			    System.out.println(bufferedReader.readLine());
+			    dataInput.close();			
 		} catch (Exception e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(this, "Can not connect to the server! Check your internet connection");
@@ -362,9 +386,6 @@ public class RunnerFrame extends JFrame implements KeyListener {
 			dos.print(Runner.id + "\t");
 			dos.print(EventLogger.levelName + "\t");
 			dos.print(getMechs() + "\t");
-			dos.print(getChoices() + "\t");
-//			dos.print(getResults(0) + "\t" + getResults(1) + "\t" + getResults(2) + "\t");
-//			dos.print(getActions(0) + "\t" + getActions(1) + "\t" + getActions(2) + "\t");
 			dos.print(gender.getSelection().getActionCommand() + "\t");
 			dos.print(age.getSelection().getActionCommand() + "\t");
 			dos.print(gamer.getSelection().getActionCommand() + "\n");
@@ -435,17 +456,6 @@ public class RunnerFrame extends JFrame implements KeyListener {
 //		return result;
 //	}
 
-	public String getChoices() {
-		String result = "";
-		// for (JCheckBox box : this.checkboxes) {
-		// if (box.isSelected()) {
-		// result += box.getText() + ",";
-		// }
-		// }
-
-
-		return result;
-	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {

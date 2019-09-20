@@ -373,9 +373,12 @@ public class MarioGame {
 				}
 			}
 		}
-		EventLogger.bulkWrite(gameEvents, true);
 		if(visual) 
 			this.window.dispose();
-		return new MarioResult(this.world, gameEvents, agentEvents);
+		// include the results in the event logger
+		MarioResult results = new MarioResult(this.world, gameEvents, agentEvents);
+		EventLogger.bulkWrite(gameEvents, true, results);
+		
+		return results;
 	}
 }

@@ -156,12 +156,15 @@ public class EventLogger {
 
 	}
 
-	public static void bulkWrite(ArrayList<MarioEvent> gameEvents, boolean levelName) {
+	public static void bulkWrite(ArrayList<MarioEvent> gameEvents, boolean levelName, MarioResult results) {
 		//variables 
 		JSONObject obj = addEventsToJSONObj(gameEvents);
 		if(obj.size() == 0) {
 			return;
 		}
+		
+		// add results info to the obj
+		obj = EventLogger.addResults(obj, results);
 		String now = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
 		String fn = "logs/event_log_" + now;
 
@@ -202,6 +205,13 @@ public class EventLogger {
 		}
 
 		return to_return.toArray(new String[0]);
+	}
+	
+	static JSONObject addResults(JSONObject obj, MarioResult results) {
+		obj.put("result", results.getGameStatus());
+		obj.put("completion", results.getCompletionPercentage());
+		obj.put("name", EventLogger.levelName);
+		return obj;
 	}
 
 }

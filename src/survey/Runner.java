@@ -77,21 +77,22 @@ public class Runner {
 		boolean done = false;
 		experimentID = 0;
 		
-		// Clear old log directory
-		try {
-			Runner.deleteDirectoryStream(Paths.get("logs"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		while (true) {
-			
+			// Clear old log directory after every submit
+			try {
+				Runner.deleteDirectoryStream(Paths.get("logs"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			do {
 				runnerFrame.setVisible(true);
 				runnerFrame.setFocusable(true);
 			    if (one && two && three) {
 			    	runnerFrame.setSubmitEnable(true);
 			    }
+			    // essentially just cycle until we get a mouse click that means something
 				while (mouseClick == RunnerEnum.NONE) {
 			    	System.out.print("");
 			    }
