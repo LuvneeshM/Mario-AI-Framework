@@ -429,7 +429,7 @@ public class RunnerFrame extends JFrame implements KeyListener {
 					} else {
 						result += lines[k] + ",";
 					}
-					result += TOKEN;
+					result += "\n"+TOKEN+"\n";
 				}
 			}
 		}
