@@ -1,3 +1,5 @@
+import pdb
+import numpy as np
 from utils import read_file
 
 class Parser:
@@ -9,14 +11,15 @@ class Parser:
     def separate_playthroughs(self):
         begin = 0
         playthroughs = []
-        for end, line in enumerate(self.contents):
-            if line == self.token:
-                playthrough = ""
-                for playthrough_part in self.contents[begin:end]:
-                    playthrough += playthrough_part
-                end = begin + 1
-                playthrough = playthrough.replace('\n', '')
-                playthroughs.append(playthrough)
-                if self.verbose > 0:
-                    print(playthrough + '\n*******************')
-        return playthroughs
+        logs = self.contents['Logs']
+        my_array = logs.str.replace("\n", "").to_numpy()
+        new_array = np.empty(0)
+
+        for entry in my_array:
+            new_entries = entry.split(self.token)[:-1]
+            # for i, e in enumerate(new_entries):
+            #     print('{}: {}\n'.format(i, e))
+            new_array = np.append(new_array, new_entries)
+        for i,entry in enumerate(new_array):
+            print('{}: {}\n'.format(i, entry))
+
