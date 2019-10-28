@@ -303,7 +303,7 @@ public class MarioGame {
 			this.window.setContentPane(this.render);
 			this.window.pack();
 			this.window.setResizable(false);
-			this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			this.window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			this.render.init();
 			this.window.setVisible(true);
 		}
@@ -379,7 +379,12 @@ public class MarioGame {
 				}
 			}
 		}
-//		EventLogger.bulkWrite(gameEvents);
-		return new MarioResult(this.world, gameEvents, agentEvents);
+		if(visual) 
+			this.window.dispose();
+		// include the results in the event logger
+		MarioResult results = new MarioResult(this.world, gameEvents, agentEvents);
+		//EventLogger.bulkWrite(gameEvents, true, results);
+		
+		return results;
 	}
 }

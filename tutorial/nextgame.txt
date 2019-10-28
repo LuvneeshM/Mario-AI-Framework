@@ -1,0 +1,6 @@
+<html>
+	<div align="center">
+		Great playing! Do you want to try it again?<br/>
+		<br/>
+	</div>
+</html>

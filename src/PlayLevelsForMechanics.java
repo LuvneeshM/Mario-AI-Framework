@@ -48,9 +48,9 @@ public class PlayLevelsForMechanics {
 	    
 	    for(Path file : allFiles) {
 	    	if(file.toString().contains(".txt")){
-	    		EventLogger.levelName = file.toString().split("/")[3];
+	    		EventLogger.levelName = file.getFileName() + "";
 	    		printResults(
-	    				game.runGame(new agents.human.Agent(), getLevel(file.toString()), 999, 0, true));
+	    				game.runGame(new agents.robinBaumgarten.Agent(), getLevel(file.toString()), 999, 0, true));
 	    	}
 			String name = file.toString();
 			System.out.println(name);

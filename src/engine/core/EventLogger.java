@@ -156,39 +156,44 @@ public class EventLogger {
 
 	}
 
-	public static void bulkWrite(ArrayList<MarioEvent> gameEvents) {
+	public static void bulkWrite(ArrayList<MarioEvent> gameEvents, boolean levelName, MarioResult results) {
 		//variables 
 		JSONObject obj = addEventsToJSONObj(gameEvents);
 		if(obj.size() == 0) {
-//			System.out.println("\tNothing to record, returning");
 			return;
 		}
 		
-		String fn = "logs/event_log_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-		String world_num = EventLogger.levelName;
+		// add results info to the obj
+		obj = EventLogger.addResults(obj, results);
+		String now = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+		String fn = "logs/event_log_" + now;
 
-		String filename = fn + "_" + run_number + ".json";
-		run_number++;
 		// make a new file
 		File logDir = new File("logs");
 		if(!logDir.exists()) {
 			logDir.mkdir();
 		}
-//		File file = new File(fn);
-//		try {
-//			file.createNewFile();
-//		} catch (IOException e1) {
-//			System.out.println("Could not make a new file.");
-//			e1.printStackTrace();
-//		}
+		
+		if(levelName)
+		{
+			// include levelname in the path
+			fn = "logs/" + EventLogger.levelName + "/event_log_" + now;
+			File levelDir = new File("logs/" + EventLogger.levelName);
+			if(!levelDir.exists()) {
+				levelDir.mkdir();
+			}
+		}
+		String filename = fn + "_" + run_number + ".json";
+		run_number++;
+
+
 		try (FileWriter fileW = new FileWriter(filename, false)) {
 			fileW.write(obj.toJSONString());
-//			System.out.println("\tSuccessfully Copied JSON Object to File " + filename);
-//			System.out.println("JSON Object: " + obj);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
 	
 	public static String[] getPlayedMechanics(ArrayList<MarioEvent> gameEvents) {
 		JSONObject obj = addEventsToJSONObj(gameEvents);
@@ -200,6 +205,13 @@ public class EventLogger {
 		}
 
 		return to_return.toArray(new String[0]);
+	}
+	
+	static JSONObject addResults(JSONObject obj, MarioResult results) {
+		obj.put("result", results.getGameStatus());
+		obj.put("completion", results.getCompletionPercentage());
+		obj.put("name", EventLogger.levelName);
+		return obj;
 	}
 
 }

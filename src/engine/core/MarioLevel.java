@@ -275,6 +275,15 @@ public class MarioLevel {
 	    this.flag.width = 16;
 	    this.flag.height = 16;
 	}
+	
+	for(int x=0; x<this.tileWidth; x++) {
+		for(int y=0; y<this.tileHeight; y++) {
+			if(this.spriteTemplates[x][y] == null) {
+				System.out.println("SHIIIIIIIT");
+			}
+		}
+	}
+	
     }
     
     public MarioLevel clone() {

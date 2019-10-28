@@ -368,6 +368,7 @@ public class MarioWorld {
 		
 		SpriteType type = level.getSpriteType(x, y);
 		if(type != SpriteType.NONE) {
+//			System.out.println("Start: " + x + " " + y + " " + type);
 		    String spriteCode = level.getSpriteCode(x, y);
 		    boolean found = false;
 		    for(MarioSprite sprite:sprites) {
