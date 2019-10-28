@@ -343,7 +343,9 @@ public class MarioGame {
 			if (!this.pause) {
 				// get actions
 				agentTimer = new MarioTimer(MarioGame.maxTime);
+//				System.out.println("\tStarted getting actions from forward model");
 				boolean[] actions = this.agent.getActions(new MarioForwardModel(this.world.clone()), agentTimer);
+//				System.out.println("\tFinished getting actions from forward model");
 				if (MarioGame.verbose) {
 					if (agentTimer.getRemainingTime() < 0
 							&& Math.abs(agentTimer.getRemainingTime()) > MarioGame.graceTime) {
@@ -352,8 +354,12 @@ public class MarioGame {
 					}
 				}
 				// update world
+//				System.out.println("\tStart updating the world");
 				this.world.update(actions);
+//				System.out.println("\tFinish updating the world");
+//				System.out.println("\tStart adding game events");
 				gameEvents.addAll(this.world.lastFrameEvents);
+//				System.out.println("\tFinish adding game events");
 				agentEvents.add(new MarioAgentEvent(actions, this.world.mario.x, this.world.mario.y,
 						(this.world.mario.isLarge ? 1 : 0) + (this.world.mario.isFire ? 1 : 0),
 						this.world.mario.onGround, this.world.currentTick));
@@ -377,7 +383,7 @@ public class MarioGame {
 			this.window.dispose();
 		// include the results in the event logger
 		MarioResult results = new MarioResult(this.world, gameEvents, agentEvents);
-		EventLogger.bulkWrite(gameEvents, true, results);
+		//EventLogger.bulkWrite(gameEvents, true, results);
 		
 		return results;
 	}
