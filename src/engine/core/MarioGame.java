@@ -377,7 +377,7 @@ public class MarioGame {
 			this.window.dispose();
 		// include the results in the event logger
 		MarioResult results = new MarioResult(this.world, gameEvents, agentEvents);
-		EventLogger.bulkWrite(gameEvents, true, results);
+//		EventLogger.bulkWrite(gameEvents, true, results);
 		
 		return results;
 	}
